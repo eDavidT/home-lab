@@ -11,12 +11,13 @@ services:
       - /docker-data/heimdall:/config
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.heimdall.rule=Host(`${DOMAINNAME}`)"
-      - "traefik.http.routers.heimdall.entrypoints=websecure"
-      - "traefik.http.routers.heimdall.tls=true"
-      - "traefik.http.routers.heimdall.tls.certresolver=letencrypt"
-      - "traefik.http.services.heimdall.loadbalancer.server.port=80"
+      traefik.enable: true
+      traefik.http.routers.heimdall.rule: Host(`${DOMAINNAME}`)
+      traefik.http.routers.heimdall.entrypoints: websecure
+      traefik.http.routers.heimdall.tls: true
+      traefik.http.routers.heimdall.tls.certresolver: letencrypt
+      traefik.http.services.heimdall.loadbalancer.server.port: 80
+      traefik.http.routers.nextcloud.middlewares: 'authelia@docker'
     networks:
       - frontend
 networks:
