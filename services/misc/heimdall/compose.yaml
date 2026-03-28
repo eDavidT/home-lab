@@ -1,0 +1,21 @@
+services:
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - APP_URL=https://edavid-lab.com
+    volumes:
+      - /docker-data/heimdall:/config
+    ports:
+      - 8001:80
+    restart: unless-stopped
+    networks:
+      - swag-backend
+
+networks:    
+  swag-backend:
+    external: true
+    name: swag-backend

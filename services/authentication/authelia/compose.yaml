@@ -1,0 +1,42 @@
+version: '3.3'
+ 
+networks:    
+  swag-backend:
+    external: true
+    name: swag-backend
+
+services:
+  authelia:
+    image: authelia/authelia
+    container_name: authelia
+    volumes:
+      - /docker-data/authelia/authelia-config:/config
+      - /docker-data/authelia/secrets:/secrets
+    networks:
+      - swag-backend
+    ports:
+      - 9091:9091
+    restart: unless-stopped
+    environment:
+      - AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE=/secrets/SMTP_PASSWORD
+      - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/secrets/ENCRYPTION_KEY
+      - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/secrets/JWT_SECRET
+      - AUTHELIA_SESSION_SECRET_FILE=/secrets/SESSION_SECRET
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+
+  redis:
+    image: redis:alpine
+    container_name: redis_authelia
+    volumes:
+      - /docker-data/authelia/redis-data:/data
+    networks:
+      - swag-backend
+    expose:
+      - 6379
+    restart: unless-stopped
+    environment:
+      - TZ=America/New_York
+      - PUID=1000
+      - PGID=1000

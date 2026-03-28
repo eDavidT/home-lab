@@ -1,0 +1,30 @@
+services:
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - URL=edavid-lab.com
+      - VALIDATION=dns
+      - SUBDOMAINS=wildcard
+      - DNSPLUGIN=cloudflare #optional
+      - SWAG_AUTORELOAD=true
+      - DOCKER_MODS=linuxserver/mods:swag-dashboard
+    volumes:
+      - /docker-data/swag:/config
+    ports:
+      - 443:443
+      - 443:443/udp
+      - 81:81
+    restart: unless-stopped
+    networks:
+      - swag-backend
+
+networks:    
+  swag-backend:
+    external: true
+    name: swag-backend
