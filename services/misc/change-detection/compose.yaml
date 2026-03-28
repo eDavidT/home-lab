@@ -19,8 +19,6 @@ services:
       - PLAYWRIGHT_DRIVER_URL=ws://browser-sockpuppet-chrome:3000/
       - HIDE_REFERER=true
       - TZ=America/New_York
-    ports:
-      - 5000:5000
     restart: unless-stopped
     depends_on:
       browser-sockpuppet-chrome:
