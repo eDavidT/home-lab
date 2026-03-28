@@ -15,7 +15,7 @@ services:
       traefik.http.routers.heimdall.rule: Host(`${DOMAINNAME}`)
       traefik.http.routers.heimdall.entrypoints: websecure
       traefik.http.routers.heimdall.tls: true
-      traefik.http.routers.heimdall.tls.certresolver: letencrypt
+      traefik.http.routers.heimdall.tls.certresolver: cloudflare
       traefik.http.routers.heimdall.middlewares: 'authelia@docker'
     networks:
       - frontend
