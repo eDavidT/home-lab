@@ -5,9 +5,20 @@ services:
     ports:
       - 53:53/tcp # plain dns over tcp
       - 53:53/udp # plain dns over udp
-      - 8090:80/tcp # http web interface
+      - 8090:80/tcp
       - 3000:3000/tcp # initial setup web interface
     volumes:
       - /docker-data/adguard/config:/opt/adguardhome/conf # app configuration
       - /docker-data/adguard/work:/opt/adguardhome/work # app working directory
-    network_mode: host
+    labels:
+      traefik.enable: true
+      traefik.http.routers.adguard.rule: Host(`adguard${DOMAINNAME}`)
+      traefik.http.routers.adguard.entrypoints: websecure
+      traefik.http.routers.adguard.tls: true
+      traefik.http.routers.adguard.tls.certresolver: cloudflare
+      traefik.http.routers.adguard.middlewares: authelia@docker
+    networks:
+      - frontend
+networks:
+  frontend:
+    external: true

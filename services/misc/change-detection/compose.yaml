@@ -19,8 +19,6 @@ services:
       - PLAYWRIGHT_DRIVER_URL=ws://browser-sockpuppet-chrome:3000/
       - HIDE_REFERER=true
       - TZ=America/New_York
-    ports:
-      - 5000:5000
     restart: unless-stopped
     depends_on:
       browser-sockpuppet-chrome:
@@ -33,9 +31,9 @@ services:
       traefik.http.routers.changedetection.rule: Host(`changedetection.${DOMAINNAME}`)
       traefik.http.routers.changedetection.entrypoints: websecure
       traefik.http.routers.changedetection.tls: true
-      traefik.http.routers.changedetection.tls.certresolver: letencrypt
+      traefik.http.routers.changedetection.tls.certresolver: cloudflare
+      traefik.http.routers.changedetection.middlewares: authelia@docker
       traefik.http.services.changedetection.loadbalancer.server.port: 5000
-      traefik.http.routers.changedetection.middlewares: 'authelia@docker'
 
   browser-sockpuppet-chrome:
     hostname: browser-sockpuppet-chrome
