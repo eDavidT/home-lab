@@ -33,7 +33,7 @@ services:
       traefik.http.routers.changedetection.rule: Host(`changedetection.${DOMAINNAME}`)
       traefik.http.routers.changedetection.entrypoints: websecure
       traefik.http.routers.changedetection.tls: true
-      traefik.http.routers.changedetection.tls.certresolver: letencrypt
+      traefik.http.routers.changedetection.tls.certresolver: cloudflare
       traefik.http.services.changedetection.loadbalancer.server.port: 5000
       traefik.http.routers.changedetection.middlewares: 'authelia@docker'
 
