@@ -16,7 +16,6 @@ services:
       traefik.http.routers.heimdall.entrypoints: websecure
       traefik.http.routers.heimdall.tls: true
       traefik.http.routers.heimdall.tls.certresolver: letencrypt
-      traefik.http.services.heimdall.loadbalancer.server.port: 80
       traefik.http.routers.heimdall.middlewares: 'authelia@docker'
     networks:
       - frontend
