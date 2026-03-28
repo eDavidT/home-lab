@@ -9,8 +9,6 @@ services:
       - APP_URL=https://edavid-lab.com
     volumes:
       - /docker-data/heimdall:/config
-    ports:
-      - 8001:80
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -19,8 +17,5 @@ services:
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.routers.whoami.tls.certresolver=letencrypt"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
-
-networks:    
-  swag-backend:
-    external: true
-    name: swag-backend
+    networks:
+      - reverseProxy
