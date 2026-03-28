@@ -26,7 +26,7 @@ services:
       - PGID=1000
       - TZ=America/New_York
     labels:
-      - "traefik.http.routers.changedetection.rule=Host(`authelia.$DOMAINNAME`)"
+      - "traefik.http.routers.authelia.rule=Host(`authelia.$DOMAINNAME`)"
 
   redis:
     image: redis:alpine
