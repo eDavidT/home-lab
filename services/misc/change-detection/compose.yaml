@@ -33,7 +33,7 @@ services:
       traefik.http.routers.changedetection.tls: true
       traefik.http.routers.changedetection.tls.certresolver: cloudflare
       traefik.http.routers.changedetection.middlewares: authelia@docker
-      
+      traefik.http.services.changedetection.loadbalancer.server.port: 80
 
   browser-sockpuppet-chrome:
     hostname: browser-sockpuppet-chrome
