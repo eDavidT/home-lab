@@ -6,7 +6,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - APP_URL=https://edavid-lab.com
+      - APP_URL=https://${DOMAINNAME}
     volumes:
       - /docker-data/heimdall:/config
     restart: unless-stopped
