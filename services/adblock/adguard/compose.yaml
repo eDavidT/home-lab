@@ -5,6 +5,7 @@ services:
     ports:
       - 53:53/tcp # plain dns over tcp
       - 53:53/udp # plain dns over udp
+      - 8090:80/tcp
       - 3000:3000/tcp # initial setup web interface
     volumes:
       - /docker-data/adguard/config:/opt/adguardhome/conf # app configuration
