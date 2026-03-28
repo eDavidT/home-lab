@@ -12,10 +12,5 @@ services:
     ports:
       - 8001:80
     restart: unless-stopped
-    networks:
-      - swag-backend
-
-networks:    
-  swag-backend:
-    external: true
-    name: swag-backend
+    labels:
+      - "traefik.http.routers.heimdall.rule=Host(`$DOMAINNAME`)"
