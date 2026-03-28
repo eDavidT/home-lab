@@ -7,4 +7,3 @@ services:
     restart: unless-stopped
     volumes:
       - /docker-data/nadeko:/app/data
-networks: {}
