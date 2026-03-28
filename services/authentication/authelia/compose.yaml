@@ -31,6 +31,9 @@ services:
       traefik.http.routers.authelia.rule: 'Host(`authelia.${DOMAINNAME}`)'
       traefik.http.routers.authelia.entryPoints: 'websecure'
       traefik.http.routers.authelia.tls: 'true'
+      traefik.http.routers.authelia.tls.certresolver: 'cloudflare'
+      traefik.http.routers.authelia.service: authelia-svc
+      traefik.http.services.authelia-svc.loadbalancer.server.port: 9091
       traefik.http.middlewares.authelia.forwardAuth.address: 'http://authelia:9091/api/authz/forward-auth'
       traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader: 'true'
       traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders: 'Remote-User,Remote-Groups,Remote-Email,Remote-Name'
