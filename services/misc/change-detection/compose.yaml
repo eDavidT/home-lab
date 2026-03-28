@@ -34,7 +34,8 @@ services:
       traefik.http.routers.changedetection.entrypoints: websecure
       traefik.http.routers.changedetection.tls: true
       traefik.http.routers.changedetection.tls.certresolver: letencrypt
-      traefik.http.services.changedetection.loadbalancer.server.port: 80
+      traefik.http.services.changedetection.loadbalancer.server.port: 5000
+      traefik.http.routers.heimdall.middlewares: 'authelia@docker'
 
   browser-sockpuppet-chrome:
     hostname: browser-sockpuppet-chrome
