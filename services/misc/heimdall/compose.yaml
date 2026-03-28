@@ -1,3 +1,7 @@
+networks:
+  frontend:
+    external: true
+
 services:
   heimdall:
     image: lscr.io/linuxserver/heimdall:latest
@@ -6,11 +10,16 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - APP_URL=https://edavid-lab.com
+      - APP_URL=https://${DOMAINNAME}
     volumes:
       - /docker-data/heimdall:/config
-    ports:
-      - 8001:80
     restart: unless-stopped
     labels:
-      - "traefik.http.routers.heimdall.rule=Host(`$DOMAINNAME`)"
+      traefik.enable: true
+      traefik.http.routers.heimdall.rule: Host(`${DOMAINNAME}`)
+      traefik.http.routers.heimdall.entrypoints: websecure
+      traefik.http.routers.heimdall.tls: true
+      traefik.http.routers.heimdall.tls.certresolver: cloudflare
+      traefik.http.routers.heimdall.middlewares: authelia@docker
+    networks:
+      - frontend
