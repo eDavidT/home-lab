@@ -9,4 +9,3 @@ services:
     volumes:
       - /docker-data/adguard/config:/opt/adguardhome/conf # app configuration
       - /docker-data/adguard/work:/opt/adguardhome/work # app working directory
-    network_mode: host
