@@ -1,5 +1,11 @@
 version: '3.2'
 
+networks:    
+  changedetection-bridge:
+    driver: bridge
+  frontend:
+    external: true
+
 services:
   changedetection:
     image: ghcr.io/dgtlmoon/changedetection.io:latest
@@ -21,8 +27,14 @@ services:
         condition: service_started
     networks:
       - changedetection-bridge
+      - frontend
     labels:
-      - "traefik.http.routers.changedetection.rule=Host(`changedetection.$DOMAINNAME`)"
+      traefik.enable: true
+      traefik.http.routers.changedetection.rule: Host(`changedetection.${DOMAINNAME}`)
+      traefik.http.routers.changedetection.entrypoints: websecure
+      traefik.http.routers.changedetection.tls: true
+      traefik.http.routers.changedetection.tls.certresolver: letencrypt
+      traefik.http.services.changedetection.loadbalancer.server.port: 80
 
   browser-sockpuppet-chrome:
     hostname: browser-sockpuppet-chrome
@@ -41,7 +53,3 @@ services:
       - changedetection-bridge
     logging:
       driver: "none"
-
-networks:    
-  changedetection-bridge:
-    driver: bridge
