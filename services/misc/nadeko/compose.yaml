@@ -4,7 +4,7 @@ services:
     container_name: nadeko
     environment:
       - TZ=America/New_York
+      - bot_token=${bot_token}
     restart: unless-stopped
     volumes:
       - /docker-data/nadeko:/app/data
-networks: {}
