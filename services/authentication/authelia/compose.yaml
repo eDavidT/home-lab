@@ -1,9 +1,8 @@
 version: '3.3'
- 
-networks:    
-  swag-backend:
+      
+networks:
+  frontend:
     external: true
-    name: swag-backend
 
 services:
   authelia:
@@ -13,7 +12,7 @@ services:
       - /docker-data/authelia/authelia-config:/config
       - /docker-data/authelia/secrets:/secrets
     networks:
-      - swag-backend
+      - frontend
     ports:
       - 9091:9091
     restart: unless-stopped
@@ -26,15 +25,18 @@ services:
       - PGID=1000
       - TZ=America/New_York
     labels:
-      - "traefik.http.routers.authelia.rule=Host(`authelia.$DOMAINNAME`)"
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`authelia.${DOMAINNAME}`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.tls.certresolver=letencrypt"
+      - "traefik.http.services.whoami.loadbalancer.server.port=9091"
 
   redis:
     image: redis:alpine
     container_name: redis_authelia
     volumes:
       - /docker-data/authelia/redis-data:/data
-    networks:
-      - swag-backend
     expose:
       - 6379
     restart: unless-stopped
