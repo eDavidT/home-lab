@@ -2,6 +2,8 @@ services:
   nadeko:
     image: ghcr.io/nadeko-bot/nadekobot:v6
     container_name: nadeko
+    environment:
+      - TZ=America/New_York
     restart: unless-stopped
     volumes:
       - /docker-data/nadeko:/app/data
