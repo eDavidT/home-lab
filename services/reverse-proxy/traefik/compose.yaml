@@ -17,12 +17,16 @@ services:
     command:
       - --api=true
       - --api.dashboard=true
+      # --api.insecure=true
       - --global.sendAnonymousUsage=false
       - --global.checkNewVersion=false
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
       - --entryPoints.web.address=:80/tcp
       - --entryPoints.websecure.address=:443/tcp
+      # Listen for dynamic configurations outside of docker
+      - --providers.file.directory=/config/dynamic
+      - --providers.file.watch=true
       # HTTP to HTTPS Redirection
       - --entryPoints.web.http.redirections.entryPoint.to=websecure
       - --entryPoints.web.http.redirections.entryPoint.scheme=https 
@@ -30,7 +34,9 @@ services:
       - --certificatesresolvers.cloudflare.acme.dnschallenge=true
       - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
       - --certificatesresolvers.cloudflare.acme.email=${CF_API_EMAIL}
-      - --certificatesresolvers.cloudflare.acme.storage=/certs/acme.json   
+      - --certificatesresolvers.cloudflare.acme.storage=/certs/acme.json
+      # Logging
+      # --log.level=DEBUG # DEBUG, PANIC, FATAL, ERROR, WARN, INFO
     environment:
       - TZ=America/New_York
       - CF_API_EMAIL=${CF_API_EMAIL}
@@ -42,6 +48,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik:/certs
+      - /docker-data/traefik/dynamic:/config/dynamic
     labels:
       traefik.enable: true
       traefik.http.routers.api.rule: 'Host(`traefik.${DOMAINNAME}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))'
@@ -52,6 +59,8 @@ services:
       traefik.http.routers.api.tls.certresolver: cloudflare
       traefik.http.routers.api.tls.domains[0].main: '${DOMAINNAME}'
       traefik.http.routers.api.tls.domains[0].sans: '*.${DOMAINNAME}'
+    depends_on:
+      - authelia
     networks:
       - frontend
 
@@ -68,7 +77,6 @@ services:
       - 9091:9091
     restart: unless-stopped
     depends_on:
-      - traefik
       - redis
     environment:
       - AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE=/secrets/SMTP_PASSWORD
