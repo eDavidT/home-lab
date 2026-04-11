@@ -2,6 +2,7 @@ services:
   adguard:
     image: adguard/adguardhome
     container_name: adguard
+    restart: unless-stopped
     ports:
       - 53:53/tcp # plain dns over tcp
       - 53:53/udp # plain dns over udp
