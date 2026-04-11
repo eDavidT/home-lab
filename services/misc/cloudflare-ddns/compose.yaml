@@ -27,6 +27,6 @@ services:
         # Your Cloudflare API token
       - DOMAINS=${DOMAINNAME},*.${DOMAINNAME}
         # Your domains (separated by commas)
-      - PROXIED=true
+      - PROXIED=false
         # Leaning toward using Cloudflare's proxy for these domains (optional)
         # Existing DNS records in Cloudflare keep their current proxy statuses
