@@ -11,15 +11,3 @@ services:
     volumes:
       - /docker-data/adguard/config:/opt/adguardhome/conf # app configuration
       - /docker-data/adguard/work:/opt/adguardhome/work # app working directory
-    labels:
-      traefik.enable: true
-      traefik.http.routers.adguard.rule: Host(`adguard${DOMAINNAME}`)
-      traefik.http.routers.adguard.entrypoints: websecure
-      traefik.http.routers.adguard.tls: true
-      traefik.http.routers.adguard.tls.certresolver: cloudflare
-      traefik.http.routers.adguard.middlewares: authelia@docker
-    networks:
-      - frontend
-networks:
-  frontend:
-    external: true
