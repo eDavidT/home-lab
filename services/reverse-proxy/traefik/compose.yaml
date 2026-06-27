@@ -92,6 +92,8 @@ services:
       traefik.http.routers.authelia.entryPoints: 'websecure'
       traefik.http.routers.authelia.tls: 'true'
       traefik.http.routers.authelia.tls.certresolver: 'cloudflare'
+      traefik.http.routers.authelia.tls.domains[0].main: '${DOMAINNAME}'
+      traefik.http.routers.authelia.tls.domains[0].sans: '*.${DOMAINNAME}'
       traefik.http.routers.authelia.service: authelia-svc
       traefik.http.services.authelia-svc.loadbalancer.server.port: 9091
       traefik.http.middlewares.authelia.forwardAuth.address: 'http://authelia:9091/api/authz/forward-auth'
